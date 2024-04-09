@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <iomanip> // Include the <iomanip> header file for stream manipulations
+#include <limits> 
 
 using namespace std;
 
@@ -291,12 +292,43 @@ int main() {
                     cin >> amount;
                     app.withdrawMoney(amount);
                     break;
-                case 4:
-                    cout << "Enter type of cryptocurrency (Bitcoin/Dogecoin/Ripplecoin): ";
-                    cin >> cryptoType;
-                    cout << "Enter Share to buy: $ ";
+                 case 4:
+                    cout << "Choose the type of cryptocurrency to buy:\n";
+                    cout << "1. Bitcoin\n";
+                    cout << "2. Dogecoin\n";
+                    cout << "3. Ripplecoin\n";
+                    cout << "Enter the option number: ";
+
+                    if (!(cin >> choice)) {
+                        cout << "Invalid input. Please enter a number.\n";
+                        cin.clear(); // Clear the fail state
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore invalid input
+                        continue;
+                    }
+
+                    // Validate the option
+                    if (choice < 1 || choice > 3) {
+                        cout << "Invalid option. Please choose a valid option.\n";
+                        break; // Break out of the switch case to return to the main menu
+                    }
+
+                    // Map the numeric option to cryptocurrency type
+                    switch (choice) {
+                        case 1:
+                            cryptoType = "Bitcoin";
+                            break;
+                        case 2:
+                            cryptoType = "Dogecoin";
+                            break;
+                        case 3:
+                            cryptoType = "Ripplecoin";
+                            break;
+                    }
+
+                    // Proceed with buying shares
+                    cout << "Enter the amount to buy: $ ";
                     cin >> amount;
-                    app.buyShares(cryptoType,amount);
+                    app.buyShares(cryptoType, amount);
                     break;
                 case 5:
                     cout << "Enter type of cryptocurrency (Bitcoin/Dogecoin/Ripplecoin): ";
@@ -323,8 +355,11 @@ int main() {
                 case 11:
                     cout << "Exiting the application.\n";
                     return 0;
-                default:
+                    default:
                     cout << "Invalid choice. Please try again.\n";
+                    cin.clear(); // Clear the fail state
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore invalid input
+
             }
         }
     } else {
